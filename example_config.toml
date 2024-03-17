@@ -1,0 +1,16 @@
+# User-specific configuration; adjust according to hardware capabilities and preferences
+
+# Optimize speed by loading the entire model into memory (requires ~5GB RAM)
+use_mmap = true
+
+# Utilize CPU threads; set to 0 to prioritize GPU usage over CPU
+n_threads = 0
+
+# Utilize GPU layers for faster processing with a strong GPU
+n_gpu_layers = 99
+
+# Ensure deterministic model outputs by specifying a seed
+seed = 0
+
+# Toggle verbose logging of model configurations
+verbose = false
