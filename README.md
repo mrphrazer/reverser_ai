@@ -1,4 +1,4 @@
-# ReverserAI (v1.0)
+# ReverserAI (v1.0.1)
 Author: **Tim Blazytko**
 
 _Provides automated reverse engineering assistance through the use of local large language models (LLMs) on consumer hardware._
