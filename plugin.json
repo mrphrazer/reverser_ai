@@ -24,13 +24,6 @@
       "Windows": "",
       "Linux": ""
    },
-   "dependencies": {
-      "pip": [
-        "toml",
-        "huggingface_hub",
-        "llama-cpp-python"
-      ]
-   },
    "version": "1.0",
    "minimumbinaryninjaversion": 2487
 }

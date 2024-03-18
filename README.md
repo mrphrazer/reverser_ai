@@ -91,7 +91,7 @@ The default configuration prioritizes GPU performance and minimizes verbose outp
 
 #### Binary Ninja
 
-To adjust settings in Binary Ninja, open `Settings` and search for `reverse_ai`. Changes require Binary Ninja to be restarted.
+To adjust settings in Binary Ninja, open `Settings` and search for `reverser_ai`. Changes require Binary Ninja to be restarted.
 
 <p align="center">
 <img alt="Plugin Settings" src="imgs/plugin_settings.png"/>
