@@ -79,13 +79,12 @@ class FunctionNameGPT:
         # Passes the custom prompt to the LLM_Agent and returns the raw response
         return self.agent.generate_response(self.build_prompt(code))
 
-    def get_function_name_suggestion(self, original_name, code):
+    def get_function_name_suggestion(self, code):
         """
         Attempts to get a function name suggestion from the LLM. If the suggestion process fails
-        (e.g., due to the code being too long), it returns the original function name.
+        (e.g., due to the code being too long), it raises an exception.
 
         Parameters:
-        - original_name (str): The original function name, used as a fallback.
         - code (str): The decompiler output for the function.
 
         Returns:
@@ -93,10 +92,12 @@ class FunctionNameGPT:
         """
         try:
             # Attempts to query the LLM for a name suggestion and filter the output
-            return self.filter_output(self.query_gpt_for_function_name_suggestion(code))
+            suggested_name = self.query_gpt_for_function_name_suggestion(code)
+            return self.filter_output(suggested_name)
         except:
-            # Fallback to the original name in case of any errors
-            return original_name
+            # Raise an error
+            raise ValueError(
+                "Failed to query the LLM for a name suggestion. The input code may exceed the maximum token limit supported by the LLM.")
 
     @staticmethod
     def filter_output(output):

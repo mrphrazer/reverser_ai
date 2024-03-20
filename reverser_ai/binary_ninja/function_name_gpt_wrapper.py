@@ -1,3 +1,4 @@
+from binaryninja import log_info, log_warn
 from binaryninja.settings import Settings
 
 from ..gpt.function_name_gpt import FunctionNameGPT
@@ -38,7 +39,8 @@ class FunctionNameGPTWrapper:
         # Access each setting and specify the correct setting identifier
         config["use_mmap"] = Settings().get_bool("reverser_ai.use_mmap")
         config["n_threads"] = Settings().get_integer("reverser_ai.n_threads")
-        config["n_gpu_layers"] = Settings().get_integer("reverser_ai.n_gpu_layers")
+        config["n_gpu_layers"] = Settings().get_integer(
+            "reverser_ai.n_gpu_layers")
         config["seed"] = Settings().get_integer("reverser_ai.seed")
         config["verbose"] = Settings().get_bool("reverser_ai.verbose")
 
@@ -70,7 +72,7 @@ class FunctionNameGPTWrapper:
         - str: The suggested function name.
         """
         # Get HLIL output for the function and query FunctionNameGPT for a name suggestion
-        return self.name_gpt.get_function_name_suggestion(f.name, self.get_hlil_output(f))
+        return self.name_gpt.get_function_name_suggestion(self.get_hlil_output(f))
 
     def apply_suggestion(self, f):
         """
@@ -81,7 +83,12 @@ class FunctionNameGPTWrapper:
         - f (Function): A BinaryNinja Function object to rename.
         """
         # Obtain the suggested name for the function
-        suggested_name = self.get_function_name_suggestion(f)
-        print(f"Renaming {f.name} to {suggested_name}")
-        # Apply the suggested name to the function
-        f.name = suggested_name
+        try:
+            suggested_name = self.get_function_name_suggestion(f)
+            log_info(
+                f"Renaming {f.name} to {suggested_name}", logger="ReverseAI")
+            # Apply the suggested name to the function
+            f.name = suggested_name
+        # Catch error and print warning
+        except ValueError as err:
+            log_warn(f"Function {f.name}: {err}", logger="ReverseAI")
