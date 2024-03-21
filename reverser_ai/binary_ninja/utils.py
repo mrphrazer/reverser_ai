@@ -1,4 +1,5 @@
 import re
+from binaryninja.enums import SymbolType
 
 
 def is_derived_func_name(function_name):
@@ -23,7 +24,7 @@ def is_derived_func_name(function_name):
     return True
 
 
-def traverse_functions_bottom_up(bv, preselected_functions=None):
+def traverse_functions_bottom_up(bv):
     """
     Implements a worklist algorithm to traverse function call trees in a bottom-up manner.
 
@@ -31,22 +32,17 @@ def traverse_functions_bottom_up(bv, preselected_functions=None):
     facilitating bottom-up analysis approaches where leaf-level information is propagated upwards in the call graph.
     This is particularly useful for scenarios where higher-level functions benefit from context provided by their leaf-level counterparts.
 
-    Optionally, a set of preselected 'interesting' functions can be specified, limiting the traversal to these functions
-    and their call dependencies. This allows for focused analysis on a subset of the binary's functions deemed most relevant.
+    TODO: Current implementation triggers an endless loop because of inproper handling of re-adding
+          function callers again. Must be refactored into a clean version of iterative post-order traversal.
 
     Args:
         bv (binaryninja.BinaryView): The binary view representing the binary analysis context.
-        preselected_functions (set, optional): A set of function names considered 'interesting' for targeted analysis. Defaults to None.
 
     Yields:
         binaryninja.Function: Functions from the binary view, traversed in a bottom-up order based on their call dependencies.
     """
-    # Initialize preselected functions to an empty set if None provided
-    preselected_functions = preselected_functions or {}
-
-    # Initialize the 'done' set with functions not in 'preselected_functions', ensuring they're skipped during traversal
-    done = set() if not preselected_functions else {
-        f for f in bv.functions if f.name not in preselected_functions}
+    # Initialize the 'done' set, ensuring processed functions are skipped during traversal
+    done = set()
 
     # Worklist of functions pending processing, for bottom-up traversal
     todo = []
@@ -71,11 +67,87 @@ def traverse_functions_bottom_up(bv, preselected_functions=None):
                 done.add(current)
                 # Yield the current function for bottom-up analysis
                 yield current
+            else:
+                # Ensure current function is reconsidered after processing its callees
+                todo.append(current)
 
-            # Ensure current function is reconsidered after processing its callees
-            todo.append(current)
+                # Add unprocessed callees to the worklist for processing
+                for callee in current.callees:
+                    if callee not in done:
+                        todo.append(callee)
 
-            # Add unprocessed callees to the worklist for processing
-            for callee in current.callees:
-                if callee not in done:
-                    todo.append(callee)
+
+def collect_symbol_related_functions(bv):
+    """
+    Identifies functions interacting with symbols of library functions, imports/exports,
+    and external data within a binary view.
+
+    Targets symbols related to data variables, specifically focusing on import addresses,
+    library functions, external symbols, imported data, and imported functions. It aggregates
+    all functions that reference these symbols, offering a concise set for detailed analysis.
+
+    Args:
+        bv (binaryninja.BinaryView): The binary view of the analysis target.
+
+    Returns:
+        set: A set of functions associated with specified symbol types.
+    """
+    # Define the set of symbol types we are interested in.
+    target_symbol_types = {
+        SymbolType.ImportAddressSymbol,
+        SymbolType.LibraryFunctionSymbol,
+        SymbolType.ExternalSymbol,
+        SymbolType.ImportedDataSymbol,
+        SymbolType.ImportedFunctionSymbol
+    }
+
+    # Initialize an empty set to store functions associated with the target symbols.
+    preselected_functions = set()
+
+    # Iterate over all data variables in the binary to check for associated symbols.
+    for address in bv.data_vars:
+        # Retrieve the data variable at the current address.
+        data_var = bv.get_data_var_at(address)
+
+        # Skip data variables that either have no symbol or whose symbol type is not in our target list.
+        if not data_var.symbol or data_var.symbol.type not in target_symbol_types:
+            continue
+
+        # For each data variable that meets the criteria, add the functions that reference it to our set.
+        preselected_functions.update(
+            code_ref.function for code_ref in data_var.code_refs)
+
+    return preselected_functions
+
+
+def collect_string_related_functions(bv):
+    """
+    Collects functions that interact with string references within a binary view.
+
+    This function iterates over all strings found in the binary, checking for data variables
+    at the strings' starting addresses. It then collects functions that reference these data
+    variables.
+
+    Args:
+        bv (binaryninja.BinaryView): The binary view containing the target binary's data.
+
+    Returns:
+        Set[binaryninja.Function]: A set of functions that reference string-related data variables.
+    """
+    # Initialize an empty set to hold functions associated with strings.
+    preselected_functions = set()
+
+    # Iterate over all strings in the binary view.
+    for s in bv.strings:
+        # Attempt to retrieve the data variable at the string's start address.
+        data_var = bv.get_data_var_at(s.start)
+
+        # Skip iteration if no data variable is found at the string's location.
+        if data_var is None:
+            continue
+
+        # Add functions that reference the located data variable to set.
+        for code_ref in data_var.code_refs:
+            preselected_functions.add(code_ref.function)
+
+    return preselected_functions

@@ -1,8 +1,20 @@
 from binaryninja import PluginCommand
 from binaryninja.settings import Settings
 
-from .reverser_ai.binary_ninja import (plugin_wrapper_rename_all_functions_bg,
-                                       plugin_wrapper_rename_function_bg)
+from .reverser_ai.binary_ninja import (
+    plugin_wrapper_context_enriched_function_naming_bg,
+    plugin_wrapper_rename_all_functions_bg,
+    plugin_wrapper_rename_function_bg,
+)
+
+'''
+Plugin Commands
+'''
+PluginCommand.register_for_function(
+    "ReverserAI\\Rename Current Function",
+    "Renames the selected function with an AI-generated suggestion.",
+    plugin_wrapper_rename_function_bg
+)
 
 PluginCommand.register(
     "ReverserAI\\Rename All Functions",
@@ -10,13 +22,17 @@ PluginCommand.register(
     plugin_wrapper_rename_all_functions_bg
 )
 
-PluginCommand.register_for_function(
-    "ReverserAI\\Rename Current Function",
-    "Renames the selected function with an AI-generated suggestion.",
-    plugin_wrapper_rename_function_bg
+
+PluginCommand.register(
+    "ReverserAI\\Enhance Function Naming with Context",
+    "Enhances function names using context-aware AI-generated suggestions for better accuracy and relevance.",
+    plugin_wrapper_context_enriched_function_naming_bg
 )
 
 
+'''
+Plugin Settings
+'''
 Settings().register_group(
     "reverser_ai",
     "ReverserAI"
