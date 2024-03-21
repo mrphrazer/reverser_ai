@@ -102,17 +102,24 @@ class FunctionNameGPT:
     @staticmethod
     def filter_output(output):
         """
-        Cleans the model's response by removing any additional explanations and normalizing the function name format.
-        Specifically, it ensures function names containing underscores are correctly formatted without
-        escape characters.
+        Cleans and normalizes the model's output to provide a well-formatted function name.
+
+        This method performs several steps:
+        1. Trimming leading and trailing whitespace from the entire output.
+        2. Splitting the output on newline characters and selecting the first line.
+        3. Removing any escape characters that may precede underscores.
+        4. Deleting backticks from the output.
 
         Parameters:
         - output (str): The raw model output containing the function name suggestion.
 
         Returns:
-        - str: The filtered and normalized function name.
+        - str: The cleaned and normalized function name.
         """
-        # Process the model's output to extract and normalize the function name
-        filtered_output = output.strip().split(
-            "\n")[0].strip().replace("\\_", "_")
+        # Trim any leading and trailing spaces for overall cleanliness.
+        # Select only the first line of the output.
+        filtered_output = output.strip().split("\n")[0]
+        # Remove escape characters for underscores and delete backticks to normalize the function name.
+        filtered_output = filtered_output.replace("\\_", "_").replace("`", "")
+
         return filtered_output
