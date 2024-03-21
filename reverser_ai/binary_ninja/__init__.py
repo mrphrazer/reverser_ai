@@ -1,6 +1,7 @@
 from binaryninja.plugin import BackgroundTaskThread
+
 from .function_name_gpt_wrapper import FunctionNameGPTWrapper
-from .utils import is_derived_func_name
+from .utils import is_derived_func_name, traverse_functions_bottom_up
 
 
 class BinjaFunctionNameGPTManager:
@@ -37,7 +38,7 @@ class BinjaFunctionNameGPTManager:
 
 
 # Initialize the manager as a global variable to be reused across plugin functions
-manager = BinjaFunctionNameGPTManager()
+manager_function_name_gpt = BinjaFunctionNameGPTManager()
 
 
 def plugin_wrapper_rename_function(_, f):
@@ -52,7 +53,7 @@ def plugin_wrapper_rename_function(_, f):
         f (binaryninja.function.Function): The Binary Ninja function object to rename.
     """
     # Retrieve the singleton instance of the GPT manager
-    gpt = manager.get_instance()
+    gpt = manager_function_name_gpt.get_instance()
 
     # Apply the GPT-based name suggestion to the function
     gpt.apply_suggestion(f)
@@ -63,7 +64,7 @@ def plugin_wrapper_rename_all_functions(bv):
     Iterates over all functions in a Binary Ninja binary view, querying a GPT-based model for name suggestions,
     and applies those suggestions to each function.
 
-    This function implements a worklist algorithm to ensure that functions are renamed in an order that respects
+    This function ensures that functions are renamed in an order that respects
     their call dependencies. Specifically, it aims to rename "leaf" functions (those that do not call other functions)
     before renaming functions that call them. This approach facilitates the propagation of contextual information
     and learned insights across function names, potentially leading to more accurate and context-aware renaming.
@@ -75,44 +76,13 @@ def plugin_wrapper_rename_all_functions(bv):
         bv (binaryninja.BinaryView): The binary view containing the functions to be renamed.
     """
     # Retrieve the singleton instance of the GPT manager for name suggestions
-    gpt = manager.get_instance()
+    gpt = manager_function_name_gpt.get_instance()
 
-    # Initialize sets and lists for tracking processed and pending functions
-    # A set to keep track of functions that have been processed
-    done = set()
-    # A worklist of functions pending processing
-    todo = []
-
-    # Initial population of the worklist with all functions in the binary view
-    # This loop also avoids re-adding functions that have already been processed
-    for f in bv.functions:
-        if f not in done:
-            todo.append(f)
-
-    # Process functions in the worklist, respecting call dependencies
-    while len(todo) != 0:
-        # Retrieve the last function added to the worklist
-        current = todo.pop()
-
-        # Skip already processed functions
-        if current in done:
-            continue
-
-        # Check if all callees of the current function have been processed
-        if all(callee in done for callee in current.callees):
-            # Apply the GPT-based name suggestion to the function if its actual name is not derived
-            if not is_derived_func_name(current.name):
-                gpt.apply_suggestion(current)
-            # Mark the current function as processed
-            done.add(current)
-
-        # Re-add the current function to the worklist to ensure it's reconsidered after its callees are processed
-        todo.append(current)
-
-        # Add unprocessed callees to the worklist for processing
-        for callee in current.callees:
-            if callee not in done:
-                todo.append(callee)
+    # Iterates functions bottom-up to rename leaves first, improving context-awareness of GPT suggestions.
+    for f in traverse_functions_bottom_up(bv):
+        # Apply the GPT-based name suggestion to the function if its actual name is not derived
+        if not is_derived_func_name(f.name):
+            gpt.apply_suggestion(f)
 
 
 class BGTask(BackgroundTaskThread):
