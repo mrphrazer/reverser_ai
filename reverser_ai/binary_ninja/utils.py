@@ -1,4 +1,6 @@
 import re
+
+import networkx as nx
 from binaryninja.enums import SymbolType
 
 
@@ -26,14 +28,11 @@ def is_derived_func_name(function_name):
 
 def traverse_functions_bottom_up(bv):
     """
-    Implements a worklist algorithm to traverse function call trees in a bottom-up manner.
+    Implements a worklist algorithm to traverse function call trees in a bottom-up manner as post-order traversal.
 
     This function creates an iterator that traverses nested function call trees from their leaves up to their roots,
     facilitating bottom-up analysis approaches where leaf-level information is propagated upwards in the call graph.
     This is particularly useful for scenarios where higher-level functions benefit from context provided by their leaf-level counterparts.
-
-    TODO: Current implementation triggers an endless loop because of inproper handling of re-adding
-          function callers again. Must be refactored into a clean version of iterative post-order traversal.
 
     Args:
         bv (binaryninja.BinaryView): The binary view representing the binary analysis context.
@@ -41,40 +40,22 @@ def traverse_functions_bottom_up(bv):
     Yields:
         binaryninja.Function: Functions from the binary view, traversed in a bottom-up order based on their call dependencies.
     """
-    # Initialize the 'done' set, ensuring processed functions are skipped during traversal
-    done = set()
+    # Initialize a directed graph to represent the function call graph
+    call_graph = nx.DiGraph()
 
-    # Worklist of functions pending processing, for bottom-up traversal
-    todo = []
+    # Add all functions found in the binary view as nodes to the graph.
+    call_graph.add_nodes_from(bv.functions)
 
-    # Populate the worklist with functions not already processed or preselected
+    # Iterate over each function in the binary view to build edges in the graph based on call relationships.
     for f in bv.functions:
-        if f not in done:
-            todo.append(f)
+        # For each function, iterate over its callees (functions that it calls).
+        for callee in f.callees:
+            # Add an edge from the current function to each of its callees,
+            # representing the call dependency in the graph.
+            call_graph.add_edge(f, callee)
 
-        # Process functions in the worklist, respecting call dependencies
-        while len(todo) != 0:
-            # Retrieve the most recently added function
-            current = todo.pop()
-
-            # Skip already processed functions
-            if current in done:
-                continue
-
-            # Check if all callees of the current function have been processed
-            if all(callee in done for callee in current.callees):
-                # Mark the current function as processed
-                done.add(current)
-                # Yield the current function for bottom-up analysis
-                yield current
-            else:
-                # Ensure current function is reconsidered after processing its callees
-                todo.append(current)
-
-                # Add unprocessed callees to the worklist for processing
-                for callee in current.callees:
-                    if callee not in done:
-                        todo.append(callee)
+    # Perform a Depth-First Search (DFS) post-order traversal of the call graph.
+    return nx.dfs_postorder_nodes(call_graph)
 
 
 def collect_symbol_related_functions(bv):

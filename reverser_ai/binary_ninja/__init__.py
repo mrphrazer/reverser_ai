@@ -133,8 +133,7 @@ def plugin_wrapper_rename_all_functions(bv):
     gpt = manager_function_name_gpt.get_instance()
 
     # Iterates functions bottom-up to rename leaves first, improving context-awareness of GPT suggestions.
-    # TODO: buttom-up traversal currently disabled due to a bug in the traversal algorithm
-    for f in bv.functions(bv):
+    for f in traverse_functions_bottom_up(bv):
         # Apply the GPT-based name suggestion to the function if its actual name is not derived
         if not is_derived_func_name(f.name):
             gpt.apply_suggestion(f)
@@ -164,7 +163,6 @@ def plugin_wrapper_context_enriched_function_naming(bv):
         bv).union(collect_string_related_functions(bv))
 
     # Iterates through functions in a bottom-up order to apply GPT-based name suggestions, starting with leaves for context propagation.
-    # TODO: buttom-up traversal currently disabled due to a bug in the traversal algorithm
     for f in bv.functions:
         # Apply the GPT-based name suggestion to the function if the function is context-enriched and their actual name is not derived
         if f in preselected_functions and not is_derived_func_name(f.name):
