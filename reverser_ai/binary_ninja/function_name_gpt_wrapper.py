@@ -37,6 +37,7 @@ class FunctionNameGPTWrapper:
         """
         config = {}
         # Access each setting and specify the correct setting identifier
+        config["model_identifier"] = Settings().get_string("reverser_ai.model_identifier")
         config["use_mmap"] = Settings().get_bool("reverser_ai.use_mmap")
         config["n_threads"] = Settings().get_integer("reverser_ai.n_threads")
         config["n_gpu_layers"] = Settings().get_integer(

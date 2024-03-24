@@ -41,55 +41,86 @@ Settings().register_group(
 
 Settings().register_setting(
     "reverser_ai.use_mmap",
-    '''{
-        "description" : "Optimize speed by loading the entire model into memory (requires ~5GB RAM)", 
+    '''
+    {
+        "description" : "Optimize speed by loading the entire model into memory (requires ~5GB RAM for the default model).", 
         "title" : "Use Memory Mapping", 
         "default" : true, 
         "type" : "boolean",
         "requiresRestart": true
-    }'''
+    }
+    '''
 )
 
 Settings().register_setting(
     "reverser_ai.n_threads",
-    '''{
-        "description" : "Utilize CPU threads; set to 0 to disable CPU. For full CPU load, set to maximum number of available threads", 
+    '''
+    {
+        "description" : "Utilize CPU threads; set to 0 to disable CPU. For full CPU load, set to maximum number of available threads.", 
         "title" : "Number of CPU Threads", 
         "default" : 0, 
         "type" : "number",
         "requiresRestart": true
-    }'''
+    }
+    '''
 )
 
 Settings().register_setting(
     "reverser_ai.n_gpu_layers",
-    '''{
-        "description" : "Utilize GPU layers for faster processing with a strong GPU", 
+    '''
+    {
+        "description" : "Utilize GPU layers for faster processing with a strong GPU.", 
         "title" : "Number of GPU Layers", 
         "default" : 99,
         "type" : "number",
         "requiresRestart": true
-    }'''
+    }
+    '''
 )
 
 Settings().register_setting(
     "reverser_ai.seed",
-    '''{
-        "description" : "Ensure deterministic model outputs by specifying a seed", 
+    '''
+    {
+        "description" : "Ensure deterministic model outputs by specifying a seed.", 
         "title" : "Seed for Determinism", 
         "default" : 0, 
         "type" : "number",
         "requiresRestart": true
-    }'''
+    }
+    '''
 )
 
 Settings().register_setting(
     "reverser_ai.verbose",
-    '''{
-        "description" : "Toggle verbose logging of model configurations", 
+    '''
+    {
+        "description" : "Toggle verbose logging of model configurations.", 
         "title" : "Verbose Model Logging", 
         "default" : false, 
         "type" : "boolean",
         "requiresRestart": true
-    }'''
+    }
+    '''
+)
+
+Settings().register_setting(
+    "reverser_ai.model_identifier",
+    '''
+    {
+        "description": "Select the model to use for inference. Each model has distinct capabilities and resource requirements.",
+        "title": "Model Identifier",
+        "type": "string",
+        "enum": [
+            "mistral-7b-instruct",
+            "mixtral-8x7b-instruct"
+        ],
+        "enumDescriptions": [
+            "A small, fast model, requiring ~5GB RAM. Ideal for quick processing and generating function names, although it has a reduced quality in outputs compared to larger models.",
+            "A larger model, requiring ~45GB RAM. Offers enhanced reasoning capabilities and accuracy at the cost of higher resource usage. Disabling memory mapping might be necessary on machines not capable of supporting the required RAM level."
+        ],
+        "default": "mistral-7b-instruct",
+        "requiresRestart": true
+    }
+    '''
 )

@@ -45,7 +45,7 @@ pip3 install -r requirements.txt
 pip3 install .
 ```
 
-Upon initial launch, the tool will automatically download the `mistral-7b-instruct-v0.2.Q4_K_M.gguf` large language model file (~5GB). The download time varies based on internet connection speed. To manually initiate the download, execute the [`model_download.py`](scripts/model_download.py) script.
+Upon initial launch, the tool will automatically download the `mistral-7b-instruct-v0.2.Q4_K_M.gguf` large language model file (~5GB). The download time varies based on internet connection speed. To manually initiate the download or download other models, execute the [`model_download.py`](scripts/model_download.py) script.
 
 
 ## Hardware Requirements
@@ -74,7 +74,13 @@ Depending on the total number of functions in the binary, this may take a while.
 
 ### Configuration
 
-Configuring _ReverserAI_ to match your hardware setup optimizes its performance. Key configuration parameters include CPU and GPU utilization preferences: For powerful GPUs, configure _ReverserAI_ to primarily use GPU, reducing CPU threads to minimize overhead. Without a strong GPU, increase CPU thread usage to maximize processing power. For systems with balanced resources, allocate tasks between CPU and GPU for efficient operation. Further details on these parameters follow:
+Configuring _ReverserAI_ to match your hardware setup optimizes its performance. Key configuration parameters include CPU and GPU utilization preferences: For powerful GPUs, configure _ReverserAI_ to primarily use GPU, reducing CPU threads to minimize overhead. Without a strong GPU, increase CPU thread usage to maximize processing power. For systems with balanced resources, allocate tasks between CPU and GPU for efficient operation. Another dimension is the selection of the underlying model which greatly influences _ReverserAI_'s functionality, performance, and resource consumption. Below, key configuration parameters are outlined along with guidance on model selection based on your computational resources and requirements.
+
+
+
+* `model_identifier`: Choose between `mistral-7b-instruct` and `mixtral-8x7b-instruct` to best suit your analysis needs and hardware capabilities. 
+  - `mistral-7b-instruct` is a smaller, faster model requiring approximately 5GB of RAM, ideal for quick processing tasks. It is best suited for environments with limited computational resources or when high throughput is required, albeit with a trade-off in the quality of outputs compared to larger models.
+  - `mixtral-8x7b-instruct` is a larger model designed, ideal for more complex code analysis tasks, requiring approximately 45GB of RAM. This model is recommended for users with access to high-end hardware and who need enhanced reasoning capabilities and accuracy. It may necessitate disabling memory mapping on machines that cannot support the required RAM level.
 
 * `use_mmap`: Enables loading the entire model into memory (~5GB) when set to `true`. Recommended for performance improvement.
 
@@ -86,7 +92,7 @@ Configuring _ReverserAI_ to match your hardware setup optimizes its performance.
 
 * `verbose`:  Enabling `verbose` mode provides detailed logs about the model and configuration settings.
 
-The default configuration prioritizes GPU performance and minimizes verbose output.
+The default configuration is designed to strike a balance between performance and resource usage, with a preference for GPU acceleration where feasible. Adjust these settings based on your specific hardware capabilities and the requirements of your reverse engineering tasks to achieve optimal performance.
 
 
 #### Binary Ninja

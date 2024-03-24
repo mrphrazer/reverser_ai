@@ -1,5 +1,4 @@
 from .agent import LLM_Agent
-from .models import MODEL_IDENTIFIERS
 
 
 class FunctionNameGPT:
@@ -24,8 +23,6 @@ class FunctionNameGPT:
         - config (dict): A configuration dictionary to be passed to the LLM_Agent.
         """
         # Overrides specific configuration settings for FunctionNameGPT usage
-        # Model identifier for the LLM
-        config['model_identifier'] = MODEL_IDENTIFIERS["mistral-7b-instruct"]
         # Context length limit to manage large functions
         config['n_context'] = 4000
 

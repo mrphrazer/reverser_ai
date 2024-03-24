@@ -1,5 +1,13 @@
 # User-specific configuration; adjust according to hardware capabilities and preferences
 
+# Model selection
+# Choose between "mistral-7b-instruct" for a smaller, faster model that requires ~5GB RAM, 
+# ideal for quick processing with reduced output quality, and "mixtral-8x7b-instruct" for a 
+# larger model that requires ~45GB RAM, offering enhanced reasoning capabilities and accuracy 
+# for complex code analysis tasks. Note: Disabling memory mapping might be necessary for 
+# "mixtral-8x7b-instruct" on machines not capable of supporting the required RAM level.
+model_identifier = "mistral-7b-instruct"
+
 # Optimize speed by loading the entire model into memory (requires ~5GB RAM)
 use_mmap = true
 
