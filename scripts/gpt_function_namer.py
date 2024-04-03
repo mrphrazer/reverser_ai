@@ -48,7 +48,7 @@ def main():
     c_function_code = generate_xor_c_function()
 
     # Let the GPT model suggest a function name based on the generated C code
-    suggested_name = gpt.get_function_name_suggestion("c_function_code")
+    suggested_name = gpt.get_function_name_suggestion(c_function_code)
 
     # Print the suggested function name
     print(f"Suggested name: {suggested_name}")
