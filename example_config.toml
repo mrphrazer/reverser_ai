@@ -8,7 +8,7 @@
 # "mixtral-8x7b-instruct" on machines not capable of supporting the required RAM level.
 model_identifier = "mistral-7b-instruct"
 
-# Optimize speed by loading the entire model into memory (requires ~5GB RAM)
+# Optimize speed by loading the entire model into memory (requires ~5GB RAM for the default model)
 use_mmap = true
 
 # Utilize CPU threads; set to 0 to prioritize GPU usage over CPU
