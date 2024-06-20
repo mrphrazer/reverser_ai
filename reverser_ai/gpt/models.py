@@ -35,7 +35,7 @@ MODEL_IDENTIFIERS = {
     # The "mixtral-8x7b-instruct" model is a significantly larger and more powerful
     # variant of the "mistral-7b-instruct", designed for more complex instruction
     # following and code analysis tasks. With its increased size, it requires
-    # considerably more computational resources and RAM (approximately 45 GB),
+    # considerably more computational resources and RAM (approximately 25 GB),
     # but it offers substantially enhanced reasoning capabilities. This model
     # excels at understanding intricate code, generating more accurate function names,
     # and providing in-depth explanations of code logic. It is particularly suited

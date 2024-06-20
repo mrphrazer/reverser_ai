@@ -117,7 +117,7 @@ Settings().register_setting(
         ],
         "enumDescriptions": [
             "A small, fast model, requiring ~5GB RAM. Ideal for quick processing and generating function names, although it has a reduced quality in outputs compared to larger models.",
-            "A larger model, requiring ~45GB RAM. Offers enhanced reasoning capabilities and accuracy at the cost of higher resource usage. Disabling memory mapping might be necessary on machines not capable of supporting the required RAM level."
+            "A larger model, requiring ~25GB RAM. Offers enhanced reasoning capabilities and accuracy at the cost of higher resource usage. Disabling memory mapping might be necessary on machines not capable of supporting the required RAM level."
         ],
         "default": "mistral-7b-instruct",
         "requiresRestart": true

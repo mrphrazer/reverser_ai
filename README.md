@@ -80,7 +80,7 @@ Configuring _ReverserAI_ to match your hardware setup optimizes its performance.
 
 * `model_identifier`: Choose between `mistral-7b-instruct` and `mixtral-8x7b-instruct` to best suit your analysis needs and hardware capabilities. 
   - `mistral-7b-instruct` is a smaller, faster model requiring approximately 5GB of RAM, ideal for quick processing tasks. It is best suited for environments with limited computational resources or when high throughput is required, albeit with a trade-off in the quality of outputs compared to larger models.
-  - `mixtral-8x7b-instruct` is a larger model designed, ideal for more complex code analysis tasks, requiring approximately 45GB of RAM. This model is recommended for users with access to high-end hardware and who need enhanced reasoning capabilities and accuracy. It may necessitate disabling memory mapping on machines that cannot support the required RAM level.
+  - `mixtral-8x7b-instruct` is a larger model designed, ideal for more complex code analysis tasks, requiring approximately 25GB of RAM. This model is recommended for users with access to high-end hardware and who need enhanced reasoning capabilities and accuracy. It may necessitate disabling memory mapping on machines that cannot support the required RAM level.
 
 * `use_mmap`: Enables loading the entire model into memory when set to `true`. Recommended for performance improvement.
 
