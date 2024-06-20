@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="ReverserAI",
-    version="1.0.1",
+    version="1.1",
     author="Tim Blazytko",
     author_email="tim@blazytko.to",
     description="Provides automated reverse engineering assistance through the use of local large language models (LLMs) on consumer hardware.",
