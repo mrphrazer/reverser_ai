@@ -43,7 +43,7 @@ Settings().register_setting(
     "reverser_ai.use_mmap",
     '''
     {
-        "description" : "Optimize speed by loading the entire model into memory (requires ~5GB RAM for the default model).", 
+        "description" : "Optimize performance by using memory mapping, which loads parts of the model on-demand instead of the entire model into memory. This can reduce memory usage and improve loading times (requires ~5GB RAM for the default model).",
         "title" : "Use Memory Mapping", 
         "default" : true, 
         "type" : "boolean",
