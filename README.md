@@ -9,7 +9,8 @@ _ReverserAI_ is a research project designed to automate and enhance reverse engi
 
 While local LLMs do not match the performance and capabilities of their cloud-based counterparts like ChatGPT4 and require substantial computing resources, they represent a significant step forward in balancing performance with confidentiality requirements.
 
-_ReverserAI_ serves as an initial exploration into the potential of local LLMs as aids in reverse engineering on consumer-grade hardware. It showcases what is currently achievable and plans to be a playground for future developments in the realm of AI-assisted reverse engineering.
+_ReverserAI_ serves as an initial exploration into the potential of local LLMs as aids in reverse engineering on consumer-grade hardware. It showcases what is currently achievable and plans to be a playground for future developments in the realm of AI-assisted reverse engineering. Additionally, the project explores the benefits of combining static analysis techniques with modern AI capabilities to improve the accuracy of AI-assisted reverse engineering.
+
 
 Some example use cases can be found in [examples](./examples).
 
@@ -28,6 +29,8 @@ Some example use cases can be found in [examples](./examples).
 - **Modular Architecture**: Designed for easy extension to support other reverse engineering tools like IDA and Ghidra.
 
 - **Consumer Hardware Compatibility**: Optimized to run on consumer-grade hardware, such as Apple silicon architectures.
+
+- **Enhanced AI with Static Analysis**: Improves AI-based analysis and suggestions by incorporating insights from static analysis, providing a richer context and more accurate results.
 
 
 ## Installation
@@ -77,7 +80,6 @@ Depending on the total number of functions in the binary, this may take a while.
 Configuring _ReverserAI_ to match your hardware setup optimizes its performance. Key configuration parameters include CPU and GPU utilization preferences: For powerful GPUs, configure _ReverserAI_ to primarily use GPU, reducing CPU threads to minimize overhead. Without a strong GPU, increase CPU thread usage to maximize processing power. For systems with balanced resources, allocate tasks between CPU and GPU for efficient operation. Another dimension is the selection of the underlying model which greatly influences _ReverserAI_'s functionality, performance, and resource consumption. Below, key configuration parameters are outlined along with guidance on model selection based on your computational resources and requirements.
 
 
-
 * `model_identifier`: Choose between `mistral-7b-instruct` and `mixtral-8x7b-instruct` to best suit your analysis needs and hardware capabilities. 
   - `mistral-7b-instruct` is a smaller, faster model requiring approximately 5GB of RAM, ideal for quick processing tasks. It is best suited for environments with limited computational resources or when high throughput is required, albeit with a trade-off in the quality of outputs compared to larger models.
   - `mixtral-8x7b-instruct` is a larger model designed, ideal for more complex code analysis tasks, requiring approximately 25GB of RAM. This model is recommended for users with access to high-end hardware and who need enhanced reasoning capabilities and accuracy. It may necessitate disabling memory mapping on machines that cannot support the required RAM level.
@@ -118,6 +120,16 @@ real	0m1.550s
 user	0m0.268s
 sys	0m0.223s
 ```
+
+
+## Static Analysis to Improve AI-based Analysis
+
+_ReverserAI_ explores how to enrich AI-related reverse engineering tasks by providing more context through static analysis. Initially, Context-Aware Function Renaming is the only implemented feature.
+
+
+### Context-Aware Function Renaming
+
+Experiments have shown that function renaming is especially effective for functions with contextual information, such as external API functions or strings that provide context for the AI. The goal is to narrow the analysis scope and focus on functions where context from strings, symbols, and other static analysis data can be leveraged.
 
 
 ## Code Organization
