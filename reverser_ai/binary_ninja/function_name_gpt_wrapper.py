@@ -37,6 +37,7 @@ class FunctionNameGPTWrapper:
         """
         config = {}
         # Access each setting and specify the correct setting identifier
+        config["model_identifier"] = Settings().get_string("reverser_ai.model_identifier")
         config["use_mmap"] = Settings().get_bool("reverser_ai.use_mmap")
         config["n_threads"] = Settings().get_integer("reverser_ai.n_threads")
         config["n_gpu_layers"] = Settings().get_integer(
@@ -86,9 +87,9 @@ class FunctionNameGPTWrapper:
         try:
             suggested_name = self.get_function_name_suggestion(f)
             log_info(
-                f"Renaming {f.name} to {suggested_name}", logger="ReverseAI")
+                f"Renaming {f.name} to {suggested_name}", logger="ReverserAI")
             # Apply the suggested name to the function
             f.name = suggested_name
         # Catch error and print warning
         except ValueError as err:
-            log_warn(f"Function {f.name}: {err}", logger="ReverseAI")
+            log_warn(f"Function {f.name}: {err}", logger="ReverserAI")

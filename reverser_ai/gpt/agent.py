@@ -1,6 +1,8 @@
 from huggingface_hub import hf_hub_download
 from llama_cpp import Llama
 
+from .models import MODEL_IDENTIFIERS
+
 
 class LLM_Agent:
     """
@@ -31,7 +33,7 @@ class LLM_Agent:
         # Number of model layers to offload to GPU
         self.n_gpu_layers = config['n_gpu_layers']
         # Model identifier for downloading
-        self.model_identifier = config['model_identifier']
+        self.model_identifier = MODEL_IDENTIFIERS[config['model_identifier']]
         # Seed for model initialization
         self.seed = config['seed']
         # Verbosity level

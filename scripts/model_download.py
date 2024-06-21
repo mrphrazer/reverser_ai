@@ -16,7 +16,9 @@ def initiate_download():
     """
     # Define the configuration for the model download
     config = {
-        # Disables loading the entire model into memory using mmap
+        # Select model to download: `mistral-7b-instruct` or `mixtral-8x7b-instruct`.
+        'model_identifier': "mistral-7b-instruct",
+        # Enables partial on-demand loading of the model into memory using mmap
         'use_mmap': False,
         # Sets the number of CPU threads to 0, effectively disabling CPU processing
         'n_threads': 0,
