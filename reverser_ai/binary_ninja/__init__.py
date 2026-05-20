@@ -138,7 +138,7 @@ def plugin_wrapper_rename_all_functions(bv):
     # Iterates functions bottom-up to rename leaves first, improving context-awareness of GPT suggestions.
     for f in traverse_functions_bottom_up(bv):
         # Verify that decompiler output (HLIL) is available for the function
-        if f.hlil_if_available is not None:
+        if f.hlil_if_available is None:
             continue
 
         # Apply the GPT-based name suggestion to the function if its actual name is not derived
@@ -173,7 +173,7 @@ def plugin_wrapper_context_enriched_function_naming(bv):
     # Iterates through functions in a bottom-up order to apply GPT-based name suggestions, starting with leaves for context propagation.
     for f in bv.functions:
         # Verify that decompiler output (HLIL) is available for the function
-        if f.hlil_if_available is not None:
+        if f.hlil_if_available is None:
             continue
 
         # Apply the GPT-based name suggestion to the function if the function is context-enriched and their actual name is not derived

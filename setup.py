@@ -3,9 +3,14 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+with open("requirements.txt", "r", encoding="utf-8") as fh:
+    install_requires = [
+        line.strip() for line in fh if line.strip() and not line.strip().startswith("#")
+    ]
+
 setuptools.setup(
     name="ReverserAI",
-    version="1.1",
+    version="1.2",
     author="Tim Blazytko",
     author_email="tim@blazytko.to",
     description="Provides automated reverse engineering assistance through the use of local large language models (LLMs) on consumer hardware.",
@@ -18,5 +23,6 @@ setuptools.setup(
         "Operating System :: POSIX :: Linux",
     ],
     packages=setuptools.find_packages(),
+    install_requires=install_requires,
     python_requires=">=3.10",
 )
