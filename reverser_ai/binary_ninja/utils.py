@@ -17,7 +17,7 @@ def is_derived_func_name(function_name):
     - True if the name is derived (e.g., by symbols), False otherwise.
     """
     # Pattern for matching the 'sub_address' naming scheme
-    sub_address_pattern = r'^sub_[0-9a-f]+$'
+    sub_address_pattern = r"^sub_[0-9a-f]+$"
 
     # Check if the function name matches the 'sub_address' pattern
     if re.fullmatch(sub_address_pattern, function_name):
@@ -79,7 +79,7 @@ def collect_symbol_related_functions(bv):
         SymbolType.LibraryFunctionSymbol,
         SymbolType.ExternalSymbol,
         SymbolType.ImportedDataSymbol,
-        SymbolType.ImportedFunctionSymbol
+        SymbolType.ImportedFunctionSymbol,
     }
 
     # Initialize an empty set to store functions associated with the target symbols.
@@ -96,7 +96,8 @@ def collect_symbol_related_functions(bv):
 
         # For each data variable that meets the criteria, add the functions that reference it to our set.
         preselected_functions.update(
-            code_ref.function for code_ref in data_var.code_refs)
+            code_ref.function for code_ref in data_var.code_refs
+        )
 
     return preselected_functions
 

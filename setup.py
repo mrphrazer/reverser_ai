@@ -18,5 +18,5 @@ setuptools.setup(
         "Operating System :: POSIX :: Linux",
     ],
     packages=setuptools.find_packages(),
-    python_requires='>=3.10',
+    python_requires=">=3.10",
 )

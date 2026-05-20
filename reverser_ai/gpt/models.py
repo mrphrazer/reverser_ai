@@ -16,9 +16,8 @@ MODEL_IDENTIFIERS = {
     # is managed separately.
     "mythomax_13b": (
         "TheBloke/MythoMax-L2-Kimiko-v2-13B-GGUF",
-        "mythomax-l2-kimiko-v2-13b.Q6_K.gguf"
+        "mythomax-l2-kimiko-v2-13b.Q6_K.gguf",
     ),
-
     # "mistral-7b-instruct" is optimized for following instructions and performing
     # code analysis tasks. It's a small, fast model designed to quickly process
     # and generate output, e.g., based on the provided programming-related prompts or
@@ -29,9 +28,8 @@ MODEL_IDENTIFIERS = {
     # contexts.
     "mistral-7b-instruct": (
         "TheBloke/Mistral-7B-Instruct-v0.2-GGUF",
-        "mistral-7b-instruct-v0.2.Q4_K_M.gguf"
+        "mistral-7b-instruct-v0.2.Q4_K_M.gguf",
     ),
-
     # The "mixtral-8x7b-instruct" model is a significantly larger and more powerful
     # variant of the "mistral-7b-instruct", designed for more complex instruction
     # following and code analysis tasks. With its increased size, it requires
@@ -43,6 +41,6 @@ MODEL_IDENTIFIERS = {
     # is justified by the need for deeper insight and higher precision in code analysis.
     "mixtral-8x7b-instruct": (
         "TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF",
-        "mixtral-8x7b-instruct-v0.1.Q4_K_M.gguf"
+        "mixtral-8x7b-instruct-v0.1.Q4_K_M.gguf",
     ),
 }

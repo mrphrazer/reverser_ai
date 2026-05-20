@@ -7,41 +7,38 @@ from .reverser_ai.binary_ninja import (
     plugin_wrapper_rename_function_bg,
 )
 
-'''
+"""
 Plugin Commands
-'''
+"""
 PluginCommand.register_for_function(
     "ReverserAI\\Rename Current Function",
     "Renames the selected function with an AI-generated suggestion.",
-    plugin_wrapper_rename_function_bg
+    plugin_wrapper_rename_function_bg,
 )
 
 PluginCommand.register(
     "ReverserAI\\Rename All Functions",
     "Renames all functions using AI-generated suggestions.",
-    plugin_wrapper_rename_all_functions_bg
+    plugin_wrapper_rename_all_functions_bg,
 )
 
 
 PluginCommand.register(
     "ReverserAI\\Enhance Function Naming with Context",
     "Enhances function names using context-aware AI-generated suggestions for better accuracy and relevance.",
-    plugin_wrapper_context_enriched_function_naming_bg
+    plugin_wrapper_context_enriched_function_naming_bg,
 )
 
 
-'''
+"""
 Plugin Settings
-'''
-Settings().register_group(
-    "reverser_ai",
-    "ReverserAI"
-)
+"""
+Settings().register_group("reverser_ai", "ReverserAI")
 
 
 Settings().register_setting(
     "reverser_ai.use_mmap",
-    '''
+    """
     {
         "description" : "Optimize performance by using memory mapping, which loads parts of the model on-demand instead of the entire model into memory. This can reduce memory usage and improve loading times (requires ~5GB RAM for the default model).",
         "title" : "Use Memory Mapping", 
@@ -49,12 +46,12 @@ Settings().register_setting(
         "type" : "boolean",
         "requiresRestart": true
     }
-    '''
+    """,
 )
 
 Settings().register_setting(
     "reverser_ai.n_threads",
-    '''
+    """
     {
         "description" : "Utilize CPU threads; set to 0 to disable CPU. For full CPU load, set to maximum number of available threads.", 
         "title" : "Number of CPU Threads", 
@@ -62,12 +59,12 @@ Settings().register_setting(
         "type" : "number",
         "requiresRestart": true
     }
-    '''
+    """,
 )
 
 Settings().register_setting(
     "reverser_ai.n_gpu_layers",
-    '''
+    """
     {
         "description" : "Utilize GPU layers for faster processing with a strong GPU.", 
         "title" : "Number of GPU Layers", 
@@ -75,12 +72,12 @@ Settings().register_setting(
         "type" : "number",
         "requiresRestart": true
     }
-    '''
+    """,
 )
 
 Settings().register_setting(
     "reverser_ai.seed",
-    '''
+    """
     {
         "description" : "Ensure deterministic model outputs by specifying a seed.", 
         "title" : "Seed for Determinism", 
@@ -88,12 +85,12 @@ Settings().register_setting(
         "type" : "number",
         "requiresRestart": true
     }
-    '''
+    """,
 )
 
 Settings().register_setting(
     "reverser_ai.verbose",
-    '''
+    """
     {
         "description" : "Toggle verbose logging of model configurations.", 
         "title" : "Verbose Model Logging", 
@@ -101,12 +98,12 @@ Settings().register_setting(
         "type" : "boolean",
         "requiresRestart": true
     }
-    '''
+    """,
 )
 
 Settings().register_setting(
     "reverser_ai.model_identifier",
-    '''
+    """
     {
         "description": "Select the model to use for inference. Each model has distinct capabilities and resource requirements.",
         "title": "Model Identifier",
@@ -122,5 +119,5 @@ Settings().register_setting(
         "default": "mistral-7b-instruct",
         "requiresRestart": true
     }
-    '''
+    """,
 )

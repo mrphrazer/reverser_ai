@@ -37,11 +37,12 @@ class FunctionNameGPTWrapper:
         """
         config = {}
         # Access each setting and specify the correct setting identifier
-        config["model_identifier"] = Settings().get_string("reverser_ai.model_identifier")
+        config["model_identifier"] = Settings().get_string(
+            "reverser_ai.model_identifier"
+        )
         config["use_mmap"] = Settings().get_bool("reverser_ai.use_mmap")
         config["n_threads"] = Settings().get_integer("reverser_ai.n_threads")
-        config["n_gpu_layers"] = Settings().get_integer(
-            "reverser_ai.n_gpu_layers")
+        config["n_gpu_layers"] = Settings().get_integer("reverser_ai.n_gpu_layers")
         config["seed"] = Settings().get_integer("reverser_ai.seed")
         config["verbose"] = Settings().get_bool("reverser_ai.verbose")
 
@@ -60,7 +61,9 @@ class FunctionNameGPTWrapper:
         - str: The HLIL decompiler output for the function, formatted as a string.
         """
         # Generate a formatted string from the HLIL lines of the function
-        return f"{str(f)}\n" + ''.join(["\t" + line + "\n" for line in map(str, f.hlil.root.lines)])
+        return f"{str(f)}\n" + "".join(
+            ["\t" + line + "\n" for line in map(str, f.hlil.root.lines)]
+        )
 
     def get_function_name_suggestion(self, f):
         """
@@ -86,8 +89,7 @@ class FunctionNameGPTWrapper:
         # Obtain the suggested name for the function
         try:
             suggested_name = self.get_function_name_suggestion(f)
-            log_info(
-                f"Renaming {f.name} to {suggested_name}", logger="ReverserAI")
+            log_info(f"Renaming {f.name} to {suggested_name}", logger="ReverserAI")
             # Apply the suggested name to the function
             f.name = suggested_name
         # Catch error and print warning

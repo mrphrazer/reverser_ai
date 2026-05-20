@@ -2,6 +2,7 @@ from reverser_ai.gpt.function_name_gpt import FunctionNameGPT
 from reverser_ai.config import load_user_config
 import sys
 
+
 def generate_xor_c_function():
     """
     Generates and returns a string containing the source code of a C function named 'example'.
@@ -22,6 +23,7 @@ def generate_xor_c_function():
             """
     return c_code
 
+
 def main():
     """
     Main function that orchestrates the generation of a C function, loading of user configuration,
@@ -32,7 +34,9 @@ def main():
     """
     # Verify that the script is called with the required number of arguments
     if len(sys.argv) < 2:
-        print("Error: Missing argument. Please provide the path to the configuration file.")
+        print(
+            "Error: Missing argument. Please provide the path to the configuration file."
+        )
         sys.exit(1)
 
     # Read configuration path from command-line arguments
@@ -52,6 +56,7 @@ def main():
 
     # Print the suggested function name
     print(f"Suggested name: {suggested_name}")
+
 
 if __name__ == "__main__":
     main()

@@ -1,9 +1,12 @@
 from binaryninja.plugin import BackgroundTaskThread
 
 from .function_name_gpt_wrapper import FunctionNameGPTWrapper
-from .utils import (collect_string_related_functions,
-                    collect_symbol_related_functions, is_derived_func_name,
-                    traverse_functions_bottom_up)
+from .utils import (
+    collect_string_related_functions,
+    collect_symbol_related_functions,
+    is_derived_func_name,
+    traverse_functions_bottom_up,
+)
 
 
 class BGTask(BackgroundTaskThread):
@@ -135,7 +138,7 @@ def plugin_wrapper_rename_all_functions(bv):
     # Iterates functions bottom-up to rename leaves first, improving context-awareness of GPT suggestions.
     for f in traverse_functions_bottom_up(bv):
         # Verify that decompiler output (HLIL) is available for the function
-        if f.hlil_if_available != None:
+        if f.hlil_if_available is not None:
             continue
 
         # Apply the GPT-based name suggestion to the function if its actual name is not derived
@@ -151,9 +154,9 @@ def plugin_wrapper_context_enriched_function_naming(bv):
     1. Identifying functions that interact with strings and symbols, providing insights into potential functionalities.
     2. Employing a bottom-up traversal of the call tree to apply names, starting from leaf functions and propagating context upwards.
 
-    Such a context-aware approach allows for more accurate and meaningful function naming, especially beneficial in cases where functions 
-    interact with external libraries or data, utilize API calls, or contain significant string references. 
-    This method aims to propagate as much information as possible upwards through the call tree, ensuring that higher-level functions 
+    Such a context-aware approach allows for more accurate and meaningful function naming, especially beneficial in cases where functions
+    interact with external libraries or data, utilize API calls, or contain significant string references.
+    This method aims to propagate as much information as possible upwards through the call tree, ensuring that higher-level functions
     are named with an understanding of their lower-level interactions.
 
     Args:
@@ -163,13 +166,14 @@ def plugin_wrapper_context_enriched_function_naming(bv):
     gpt = manager_function_name_gpt.get_instance()
 
     # Collect functions interacting with significant strings and symbols for focused naming
-    preselected_functions = collect_symbol_related_functions(
-        bv).union(collect_string_related_functions(bv))
+    preselected_functions = collect_symbol_related_functions(bv).union(
+        collect_string_related_functions(bv)
+    )
 
     # Iterates through functions in a bottom-up order to apply GPT-based name suggestions, starting with leaves for context propagation.
     for f in bv.functions:
         # Verify that decompiler output (HLIL) is available for the function
-        if f.hlil_if_available != None:
+        if f.hlil_if_available is not None:
             continue
 
         # Apply the GPT-based name suggestion to the function if the function is context-enriched and their actual name is not derived
@@ -192,7 +196,7 @@ def plugin_wrapper_rename_function_bg(bv, f):
         bv,
         "Querying GPT for a function name suggestion and applying it to the selected function.",
         plugin_wrapper_rename_function,
-        f
+        f,
     )
     background_task.start()
 
@@ -210,7 +214,7 @@ def plugin_wrapper_rename_all_functions_bg(bv):
     background_task = BGTask(
         bv,
         "Renaming all functions in the binary based on GPT suggestions.",
-        plugin_wrapper_rename_all_functions
+        plugin_wrapper_rename_all_functions,
     )
     background_task.start()
 
@@ -228,6 +232,6 @@ def plugin_wrapper_context_enriched_function_naming_bg(bv):
     background_task = BGTask(
         bv,
         "Enhancing function names in the binary with context-aware AI suggestions.",
-        plugin_wrapper_context_enriched_function_naming
+        plugin_wrapper_context_enriched_function_naming,
     )
     background_task.start()

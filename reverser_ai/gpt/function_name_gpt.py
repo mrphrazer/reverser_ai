@@ -24,10 +24,10 @@ class FunctionNameGPT:
         """
         # Overrides specific configuration settings for FunctionNameGPT usage
         # Context length limit to manage large functions
-        config['n_context'] = 4000
+        config["n_context"] = 4000
 
         # Define generation kwargs with empirically determined values for optimal performance
-        config['generation_kwargs'] = {
+        config["generation_kwargs"] = {
             # Limit model output to prevent overly verbose responses
             "max_tokens": 5000,
             # Token indicating the end of the model's output
@@ -91,10 +91,11 @@ class FunctionNameGPT:
             # Attempts to query the LLM for a name suggestion and filter the output
             suggested_name = self.query_gpt_for_function_name_suggestion(code)
             return self.filter_output(suggested_name)
-        except:
+        except Exception as exc:
             # Raise an error
             raise ValueError(
-                "Failed to query the LLM for a name suggestion. The input code may exceed the maximum token limit supported by the LLM.")
+                "Failed to query the LLM for a name suggestion. The input code may exceed the maximum token limit supported by the LLM."
+            ) from exc
 
     @staticmethod
     def filter_output(output):

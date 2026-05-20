@@ -25,21 +25,21 @@ class LLM_Agent:
         - config (dict): Configuration dictionary containing model settings.
         """
         # Number of tokens for the context window
-        self.n_context = config['n_context']
+        self.n_context = config["n_context"]
         # Use memory mapping for model loading
-        self.use_mmap = config['use_mmap']
+        self.use_mmap = config["use_mmap"]
         # Number of CPU threads to utilize
-        self.n_threads = config['n_threads']
+        self.n_threads = config["n_threads"]
         # Number of model layers to offload to GPU
-        self.n_gpu_layers = config['n_gpu_layers']
+        self.n_gpu_layers = config["n_gpu_layers"]
         # Model identifier for downloading
-        self.model_identifier = MODEL_IDENTIFIERS[config['model_identifier']]
+        self.model_identifier = MODEL_IDENTIFIERS[config["model_identifier"]]
         # Seed for model initialization
-        self.seed = config['seed']
+        self.seed = config["seed"]
         # Verbosity level
-        self.verbose = config['verbose']
+        self.verbose = config["verbose"]
         # Generation kwargs to define model inference options
-        self.generation_kwargs = config['generation_kwargs']
+        self.generation_kwargs = config["generation_kwargs"]
 
         # Downloading the model and getting its local path
         self.model_path = self.get_model_path(self.model_identifier)
